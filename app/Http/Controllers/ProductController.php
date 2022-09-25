@@ -115,11 +115,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $item = Product::findOrFail($id);
+        $item = Product::findOrFail($id); 
         $item->delete();
 
         //Baris untuk menghapus product sekaligus gambar product yang berelasi
-        ProductGallery::where('product_id', $id)->delete();
+        ProductGallery::where('products_id', $id)->delete();
 
         return redirect()->route('products.index');
     }
