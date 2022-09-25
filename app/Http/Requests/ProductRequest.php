@@ -21,7 +21,7 @@ class ProductRequest extends FormRequest
      *
      * @return array, mixed>
      */
-    public function rules()
+    public function rules() 
     {
         return [
             'name' => 'required|max:255',

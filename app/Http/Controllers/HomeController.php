@@ -11,6 +11,7 @@ class HomeController extends Controller
      *
      * @return void
      */
+    //BARIS UNTUK YANG TIDAK LOGIN TIDAK BISA MASUK
     public function __construct()
     {
         $this->middleware('auth');

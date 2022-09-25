@@ -4,12 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductGallery;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Str;
 
 
 class ProductController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    //BARIS UNTUK YANG TIDAK LOGIN TIDAK BISA MASUK
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -106,6 +118,24 @@ class ProductController extends Controller
         $item = Product::findOrFail($id);
         $item->delete();
 
+        //Baris untuk menghapus product sekaligus gambar product yang berelasi
+        ProductGallery::where('product_id', $id)->delete();
+
         return redirect()->route('products.index');
+    }
+
+    //kenapa ada id karena akan mengambil produk berdasarkan id saja
+    public function gallery(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        //query untuk mengambil data
+        $items = ProductGallery::with('product')
+                ->where('products_id', $id)
+                ->get();
+
+        return view('pages.products.gallery')->with([
+            'product' => $product,
+            'items' => $items
+        ]);
     }
 }
